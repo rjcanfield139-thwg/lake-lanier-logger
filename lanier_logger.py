@@ -309,6 +309,20 @@ def local_now():
         return datetime.now()
 
 
+def already_logged_this_hour(path):
+    """True if the log already has an 'ok' row for the current local hour."""
+    if not os.path.exists(path):
+        return False
+    now = local_now()
+    want_date, want_hour = now.strftime("%Y-%m-%d"), now.strftime("%H")
+    with open(path, newline="", encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if (r.get("date") == want_date and (r.get("time") or "")[:2] == want_hour
+                    and r.get("status") == "ok"):
+                return True
+    return False
+
+
 def take_reading(path, retries=3, retry_wait=60):
     stamp = local_now()
     readings, error = {}, None
@@ -376,12 +390,18 @@ def main():
     ap.add_argument("--hours", type=int, default=24, help="number of hourly readings (default 24)")
     ap.add_argument("--now", action="store_true", help="also take a reading immediately")
     ap.add_argument("--once", action="store_true", help="take one reading and exit")
+    ap.add_argument("--skip-if-logged", action="store_true",
+                    help="with --once: do nothing if this hour already has a good reading")
     args = ap.parse_args()
 
     path = os.path.abspath(args.file)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
     print(f"Logging to {path}", flush=True)
 
     if args.once:
+        if args.skip_if_logged and already_logged_this_hour(path):
+            print("This hour is already logged - nothing to do.")
+            return
         take_reading(path)
         return
 
