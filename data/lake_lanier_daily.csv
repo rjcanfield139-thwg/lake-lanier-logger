@@ -1,2 +1,2 @@
 date,readings,avg_inflow_cfs,avg_outflow_cfs,avg_net_cfs,total_net_acre_ft,total_net_million_gallons,rain_24h_in_last_reading,lake_level_first_ft,lake_level_last_ft,lake_level_change_ft,surface_area_acres,est_change_from_flow_ft,est_change_from_rain_ft,est_change_ft,actual_change_ft,gap_ft,unmeasured_flow_cfs,correction_cfs,corrected_est_change_ft
-2026-11-04,2,521,644,-123,-20.3,-6.6,0.80,1062.63,1062.63,0.00,34280,-0.001,0.067,0.066,0.000,-0.066,-13703,,
+2026-11-04,3,546,636,-91,-22.4,-7.3,0.84,1062.63,1062.62,-0.01,34279,-0.001,0.070,0.069,-0.010,-0.079,-10970,,
